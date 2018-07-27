@@ -14,9 +14,9 @@ import urllib2
 import os
 import cookielib
 import json
-from tqdm import tqdm_notebook as tqdm
+#from tqdm import tqdm_notebook as tqdm
 
-# from tqdm import tqdm #Pythonで実行する場合
+from tqdm import tqdm #Pythonで実行する場合
 
 
 # In[39]:
@@ -115,11 +115,4 @@ for i , (img , Type) in enumerate(tqdm(ActualImages)):
         print "could not load : "+img
         print e
 
-
-# # データセットの削除
-
-# In[107]:
-
-
-get_ipython().run_cell_magic('bash', '', 'rm -rf data/')
 
