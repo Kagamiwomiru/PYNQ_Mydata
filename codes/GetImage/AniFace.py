@@ -8,6 +8,14 @@ import ConvertTo32 as CT
 import glob
 from tqdm import tqdm #コマンドライン用
 # from tqdm import tqdm_notebook as tqdm #jupyter notebook用
+import sys
+args = sys.argv
+
+if len(args)!=2:
+    print("生成するキャラ名を指定してください。")
+    print("例:python3 AniFace.py KizunaAI")
+    sys.exit()
+
 
 # 特徴量ファイルをもとに分類器を作成
 # https://github.com/nagadomi/lbpcascade_animeface 
@@ -15,8 +23,8 @@ classifier = cv2.CascadeClassifier('cascades/lbpcascade_animeface.xml')
 
 
 #設定
-print("生成するキャラ名を入力:")
-output_dir=input()
+# print("生成するキャラ名を入力:")
+output_dir=args[1]
 
 
 # ディレクトリを作成
