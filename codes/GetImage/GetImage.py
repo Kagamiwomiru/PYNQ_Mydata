@@ -1,65 +1,38 @@
-
 # coding: utf-8
-
-# # 画像を収集します。
-
-# In[26]:
-
-
-# -*- coding: utf-8 -*-
+# 画像を収集します。
 from bs4 import BeautifulSoup
 import requests
 import re
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import os
-import cookielib
+import http.cookiejar
 import json
-#from tqdm import tqdm_notebook as tqdm
+from tqdm import tqdm
+import sys
+args = sys.argv
 
-from tqdm import tqdm #Pythonで実行する場合
-
-
-# In[39]:
+if len(args)<2:
+    print("検索ワードを指定してください。")
+    print("例:python3 GetImage.py Python")
+    sys.exit()
+if len(args)>2:
+    print("AND検索を利用する場合は、スペースの代わりに'+'を使ってください。")
+    print("例:python3 GetImage.py Python+入門")
+    sys.exit()
 
 
 def get_soup(url,header):
-    return BeautifulSoup(urllib2.urlopen(urllib2.Request(url,headers=header)),'html.parser')
+    return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)),'html.parser')
 
+query=args[1]
 
-# In[40]:
-
-
-query="Kizuna Ai"
-# and_query="jpg"
-# not_query="small large orig php"
 and_query=""
 not_query="gif"
-query.decode("utf-8")
 label="0"
-print "検索ワード:"+query
+print("検索ワード:"+query)
 
-
-# In[41]:
-
-
-#検索ワード
-query= query.split()
-query='+'.join(query)
-
-#AND検索
-and_query= and_query.split()
-and_query='+'.join(and_query)
-
-#NOT検索
-not_query= not_query.split()
-not_query='-'.join(not_query)
-
-url="https://www.google.co.in/search?q="+query+"+"+and_query+"-"+not_query+"&source=lnms&tbm=isch"
-print url
-
-
-# In[42]:
-
+url="https://www.google.co.in/search?q="+query+"&source=lnms&tbm=isch"
+print(url)
 
 #add the directory for your image here
 DIR="data"
@@ -67,20 +40,12 @@ header={'User-Agent':"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KH
 }
 soup = get_soup(url,header)
 
-
-# In[110]:
-
-
 ActualImages=[]# contains the link for Large original images, type of  image
 for a in soup.find_all("div",{"class":"rg_meta"}):
     link , Type =json.loads(a.text)["ou"]  ,json.loads(a.text)["ity"]
     ActualImages.append((link,Type))
 
-print   len(ActualImages),"枚の画像が見つかりました。"
-
-
-# In[111]:
-
+print(len(ActualImages),"枚の画像が見つかりました。")
 
 if not os.path.exists(DIR):
             os.mkdir(DIR)
@@ -89,17 +54,10 @@ DIR = os.path.join(DIR, query.split()[0])
 if not os.path.exists(DIR):
             os.mkdir(DIR)
 
-
-# In[112]:
-
-
-###print images
 print ("画像をダウンロード中...")
 for i , (img , Type) in enumerate(tqdm(ActualImages)):
     try:
-        req = urllib2.Request(img, headers={'User-Agent' : header})
-        raw_img = urllib2.urlopen(req).read()
-
+        raw_img = urllib.request.urlopen(img).read()
         cntr = len([i for i in os.listdir(DIR) if label in i]) + 1
 #         print cntr
         if len(Type)==0:
@@ -112,7 +70,5 @@ for i , (img , Type) in enumerate(tqdm(ActualImages)):
         f.write(raw_img)
         f.close()
     except Exception as e:
-        print "could not load : "+img
-        print e
-
-
+        print("could not load : "+img)
+        print(e)
