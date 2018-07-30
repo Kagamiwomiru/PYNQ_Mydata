@@ -56,19 +56,19 @@ from PIL import Image
 
 # データセット設定
 #学習用、バリデーション用画像パス
-Train_dir='/home/kagamiwomiru/MakeCifar/train_face/'
-Test_dir='/home/kagamiwomiru/MakeCifar/eval_face'
+Train_dir='/home/kagamiwomiru/dataset/Vtuber/train_face/'
+Test_dir='/home/kagamiwomiru/dataset/Vtuber/eval_face/'
 
 #学習画像枚数
-nb_train_samples=900
+nb_train_samples=540
 #テスト画像枚数
-nb_test_samples=30
+nb_test_samples=150
 #ラベル
-labels=['Kagami','Uchiyama','Kato']
+labels=['KizunaAI','MiraiAkari','Siro']
 
 # BinaryNetパラメータ設定
 #バッチサイズ
-batch_size = 5
+batch_size = 50
 # alphaは指数移動平均係数
 LP_alpha = .1
 LP_epsilon = 1e-4
@@ -78,7 +78,7 @@ LP_W_LR_scale = "Glorot"
 
 # 学習パラメータ設定
 #エポック数
-num_epochs = 100
+num_epochs = 500
 # Decaying 学習率
 LR_start = 0.001
 LR_fin = 0.0000003
@@ -126,11 +126,11 @@ class DATASET(DenseDesignMatrix):
             for image in glob.glob(filepath):
                 im=np.array(Image.open(image))
                 X[i,:]=im.reshape(3072)
-                if(label=='Kagami'):
+                if(label=='KizunaAI'):
                     y[i,0]=0
-                elif(label=='Uchiyama'):
+                elif(label=='MiraiAkari'):
                     y[i,0]=1
-                elif(label=='Kato'):
+                elif(label=='Siro'):
                     y[i,0]=2
                 i+=1
         return X,y
@@ -150,11 +150,11 @@ class DATASET(DenseDesignMatrix):
             for image in glob.glob(filepath):
                 im=np.array(Image.open(image))
                 X[i,:]=im.reshape(3072)
-                if(label=='Kagami'):
+                if(label=='KizunaAI'):
                     y[i,0]=0
-                elif(label=='Uchiyama'):
+                elif(label=='MiraiAkari'):
                     y[i,0]=1
-                elif(label=='Kato'):
+                elif(label=='Siro'):
                     y[i,0]=2
                 i+=1
         return X,y

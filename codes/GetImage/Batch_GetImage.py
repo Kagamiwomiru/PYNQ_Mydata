@@ -27,7 +27,7 @@ for query in queries:
 
 print("データセット用に加工しています。この処理には時間がかかります。")
 
-subprocess.call(['python3 ./AniFace.py KizunaAI'],shell=True)
+subprocess.call(['python3 ./AniFace.py '+queries[0]],shell=True)
 
 
 subprocess.call(['rm -rf ./data'],shell=True) #このスクリプトを実行すると、dataディレクトリを消します。

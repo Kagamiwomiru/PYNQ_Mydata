@@ -8,13 +8,18 @@ import ConvertTo32 as CT
 import glob
 from tqdm import tqdm #コマンドライン用
 # from tqdm import tqdm_notebook as tqdm #jupyter notebook用
-import sys
 args = sys.argv
 
 if len(args)!=2:
     print("生成するキャラ名を指定してください。")
     print("例:python3 AniFace.py KizunaAI")
     sys.exit()
+import random
+import string
+
+def randomname(n):
+    randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
+    return ''.join(randlst)
 
 
 # 特徴量ファイルをもとに分類器を作成
@@ -46,10 +51,11 @@ for sub_dir in glob.glob(root_dir+"*"):
         else:
             faces = classifier.detectMultiScale(gray_image)
             for i, (x,y,w,h) in enumerate(faces):
+                filename=randomname(10)
                 # 顔を切り抜く
                 face_image = data[y:y+h, x:x+w]
                 now = datetime.datetime.now()
-                output_path = os.path.join(output_root_dir+output_dir,'{0:%Y%m%d_%H%M%S}.jpg'.format(now))
+                output_path = os.path.join(output_root_dir+output_dir,filename+'.jpg')
                 cv2.imwrite(output_path,face_image)
 
 # 画像の加工

@@ -44,7 +44,7 @@ if __name__ == "__main__":
     peCounts = [16, 32, 16, 16, 4, 1, 1, 1, 4]
     simdCounts = [3, 32, 32, 32, 32, 32, 4, 8, 1]
     
-    classes = ['Kagami','Uchiyama','Kato']
+    classes = ['KizunaAI','MiraiAkari','Siro']
     
     if not os.path.exists(targetDirBin):
       os.mkdir(targetDirBin)
